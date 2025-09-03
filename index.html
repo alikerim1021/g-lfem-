@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Benimle Çıkar mısın? 💙</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-orbs" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+
+    <main class="wrap">
+      <section class="card" id="card">
+        <h1 class="title">Sana bir şey söylemem lazım...</h1>
+        <p class="subtitle">
+          Uzun zamandır söylemek istediğim bir şey var. Hazır mısın? 💫
+        </p>
+
+        <div class="question">
+          <span class="big">Benimle çıkar mısın?</span>
+        </div>
+
+        <div class="actions">
+          <button id="yesBtn" class="btn yes">Evet 💙</button>
+          <button id="noBtn" class="btn no">Hayır</button>
+        </div>
+
+        <p class="mini-tip">Hayır'a tıklaması biraz zor olabilir 😇</p>
+
+        <form class="note" id="noteForm">
+          <label for="noteInput">İstersen buraya bir not bırakabilirsin:</label>
+          <textarea id="noteInput" rows="3" placeholder="Örn: Yarın kahve?"></textarea>
+          <button type="submit" class="btn ghost">Notu kaydet</button>
+        </form>
+
+        <div id="result" class="result" hidden>
+          <h2>Yaşasın! 💫</h2>
+          <p>
+            Bu, günümün en güzel anı oldu. Birlikte güzel bir şeyler yapalım mı?
+          </p>
+          <div class="plan">
+            <a class="btn primary" id="planBtn" href="#" target="_blank" rel="noreferrer">Hemen plan yapalım</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>© <span id="year"></span> — Küçük bir <b>itiraf</b> sitesi</span>
+      </footer>
+    </main>
+
+    <script>
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+      const result = document.getElementById('result');
+      const card = document.getElementById('card');
+      const noteForm = document.getElementById('noteForm');
+      const noteInput = document.getElementById('noteInput');
+      const planBtn = document.getElementById('planBtn');
+      const yearSpan = document.getElementById('year');
+      yearSpan.textContent = new Date().getFullYear();
+
+      // Move the "Hayır" button away on hover/click
+      function moveNo() {
+        const bounds = card.getBoundingClientRect();
+        const btnBounds = noBtn.getBoundingClientRect();
+        const padding = 16;
+        const maxLeft = bounds.width - btnBounds.width - padding;
+        const maxTop = bounds.height - btnBounds.height - padding - 40; // keep inside card
+
+        const randLeft = Math.max(0, Math.min(maxLeft, Math.random() * maxLeft));
+        const randTop = Math.max(0, Math.min(maxTop, Math.random() * maxTop));
+
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = randLeft + 'px';
+        noBtn.style.top = randTop + 'px';
+      }
+
+      noBtn.addEventListener('mouseover', moveNo);
+      noBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        moveNo();
+      });
+
+      function launchConfetti() {
+        const pieces = 40;
+        for (let i = 0; i < pieces; i++) {
+          const c = document.createElement('span');
+          c.className = 'confetti';
+          c.style.left = Math.random() * 100 + '%';
+          c.style.animationDelay = (Math.random() * 0.6) + 's';
+          c.style.width = (6 + Math.random() * 6) + 'px';
+          c.style.height = c.style.width;
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 3000);
+        }
+      }
+
+      yesBtn.addEventListener('click', () => {
+        document.body.classList.add('celebrate');
+        result.hidden = false;
+        launchConfetti();
+
+        // If a note was written, add it to the plan text
+        const note = noteInput.value.trim();
+        if (note) {
+          planBtn.textContent = 'Plan: ' + note;
+        }
+        // Build a WhatsApp friendly message
+        const msg = encodeURIComponent('Merhaba! Az önce küçük bir sitede “Evet” dedin 💙\n\n' +
+          (note ? 'Notun: ' + note + '\n\n' : '') +
+          'Ne dersin, birlikte bir şeyler planlayalım mı?');
+        planBtn.href = 'https://wa.me/?text=' + msg;
+      });
+
+      // Save note to localStorage
+      noteForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        localStorage.setItem('itiraf-notu', noteInput.value);
+        noteForm.querySelector('button').textContent = 'Kaydedildi ✓';
+        setTimeout(() => (noteForm.querySelector('button').textContent = 'Notu kaydet'), 1500);
+      });
+
+      // Load saved note
+      const saved = localStorage.getItem('itiraf-notu');
+      if (saved) noteInput.value = saved;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+/* === Mavi temalı 'itiraf' sayfası === */
+:root{
+  --bg1:#0e2a47;
+  --bg2:#1a4f8b;
+  --card:#0b1e33cc;
+  --glass:#ffffff1a;
+  --text:#e8f0ff;
+  --muted:#b3c7e6;
+  --primary:#5db0ff;
+  --primary-strong:#2b8df0;
+  --yes:#2bd48f;
+  --no:#ff6b6b;
+  --shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background: linear-gradient(135deg, var(--bg1), var(--bg2)) fixed;
+  overflow-x:hidden;
+}
+
+/* soft glowing animated blobs */
+.bg-orbs{ position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+.bg-orbs span{
+  position:absolute; width:42vmin; height:42vmin; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #79c4ff40, #0000);
+  filter: blur(20px);
+  animation: float 12s ease-in-out infinite alternate;
+}
+.bg-orbs span:nth-child(1){ top:5%; left:5%; }
+.bg-orbs span:nth-child(2){ bottom:10%; right:-10%; animation-duration:15s; }
+.bg-orbs span:nth-child(3){ top:30%; right:20%; animation-duration:18s; }
+@keyframes float{ to{ transform: translate(3vmin, -4vmin) scale(1.05); } }
+
+.wrap{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  padding:24px;
+}
+
+.card{
+  position:relative;
+  width:min(720px, 94vw);
+  background: linear-gradient(180deg, var(--card), #0b1e33aa);
+  border:1px solid #ffffff22;
+  border-radius:24px;
+  padding:28px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.title{ font-size: clamp(20px, 3.5vw, 32px); margin:0 0 8px; letter-spacing:.2px; }
+.subtitle{ color:var(--muted); margin:0 0 18px; }
+
+.question{
+  display:flex; align-items:center; justify-content:center;
+  margin: 6px 0 18px;
+}
+.big{
+  font-size: clamp(28px, 6.5vw, 44px);
+  font-weight:700;
+  text-align:center;
+  line-height:1.15;
+  text-shadow: 0 6px 18px rgba(17,38,70,.45);
+}
+
+.actions{ position:relative; display:flex; gap:12px; justify-content:center; margin:18px 0 8px; min-height:48px; }
+.btn{
+  appearance:none; border:none; cursor:pointer;
+  padding:12px 18px; border-radius:999px; font-weight:700;
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,.2);
+}
+.btn:focus{ outline:2px solid #ffffff55; outline-offset:2px; }
+.btn:hover{ transform: translateY(-2px); }
+.btn:active{ transform: translateY(0); }
+
+.btn.yes{ background: linear-gradient(180deg, var(--yes), #20b87a); color:#072a1e; }
+.btn.no{ background: linear-gradient(180deg, var(--no), #e25555); color:#fff; }
+.btn.ghost{ background:transparent; border:1px solid #ffffff33; color:var(--text); }
+.btn.primary{ background: linear-gradient(180deg, var(--primary), var(--primary-strong)); color:#06223c; }
+
+.mini-tip{
+  text-align:center; color:#94b4e8; font-size:.9rem; margin:4px 0 12px;
+}
+
+.note{
+  display:grid; gap:8px; margin-top:10px;
+}
+.note label{ font-size:.95rem; color:#cce0ff; }
+.note textarea{
+  resize:vertical; min-height:70px; max-height:180px;
+  padding:12px; border-radius:14px; border:1px solid #ffffff22;
+  background: #0c2744aa; color:var(--text);
+}
+.note button{ justify-self:start; }
+
+.result{
+  margin-top:16px; padding:16px; border-radius:18px;
+  background: linear-gradient(180deg, #0e2a47bb, #0e2a47aa);
+  border:1px solid #ffffff22;
+}
+.result h2{ margin:0 0 6px; }
+.plan{ margin-top:10px; }
+
+.foot{ opacity:.9; font-size:.9rem; }
+
+/* confetti */
+.confetti{
+  position: fixed;
+  top:-10px; width:8px; height:8px; border-radius:2px;
+  background: white;
+  animation: fall 2.5s linear forwards;
+  box-shadow: 0 0 10px #fff8;
+}
+@keyframes fall{
+  0%{ transform: translateY(-10vh) rotate(0deg); opacity:1; }
+  100%{ transform: translateY(110vh) rotate(720deg); opacity:.9; }
+}
+
+/* party glow on success */
+body.celebrate .card{
+  box-shadow: 0 20px 60px rgba(93,176,255,.45), 0 0 0 1px #ffffff22 inset;
+  border-color: #6ec3ff66;
+}
+
+/* Responsive tweaks */
+@media (max-width:520px){
+  .actions{ justify-content:space-between; }
+  .btn{ padding:12px 14px; }
+  .btn.no{ min-width:86px; }
+}
